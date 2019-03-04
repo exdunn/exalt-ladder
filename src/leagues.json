@@ -1,0 +1,136 @@
+[
+  {
+    "id": "Standard",
+    "description": "#LeagueStandard",
+    "registerAt": null,
+    "event": false,
+    "url": "http://pathofexile.com/forum/view-thread/71278",
+    "startAt": "2013-01-23T21:00:00Z",
+    "endAt": null,
+    "delveEvent": true,
+    "rules": []
+  },
+  {
+    "id": "Hardcore",
+    "description": "#LeagueHardcore",
+    "registerAt": null,
+    "event": false,
+    "url": "http://pathofexile.com/forum/view-thread/71276",
+    "startAt": "2013-01-23T21:00:00Z",
+    "endAt": null,
+    "delveEvent": true,
+    "rules": [
+      {
+        "id": 4,
+        "name": "Hardcore",
+        "description": "A character killed in Hardcore is moved to its parent league."
+      }
+    ]
+  },
+  {
+    "id": "SSF Standard",
+    "description": "#LeagueStandardSSF",
+    "registerAt": null,
+    "event": false,
+    "url": "http://pathofexile.com/forum/view-thread/1841357",
+    "startAt": "2013-01-23T21:00:00Z",
+    "endAt": null,
+    "delveEvent": true,
+    "rules": [
+      {
+        "id": 24,
+        "name": "Solo",
+        "description": "You may not party in this league."
+      }
+    ]
+  },
+  {
+    "id": "SSF Hardcore",
+    "description": "#LeagueHardcoreSSF",
+    "registerAt": null,
+    "event": false,
+    "url": "http://pathofexile.com/forum/view-thread/1841353",
+    "startAt": "2013-01-23T21:00:00Z",
+    "endAt": null,
+    "delveEvent": true,
+    "rules": [
+      {
+        "id": 4,
+        "name": "Hardcore",
+        "description": "A character killed in Hardcore is moved to its parent league."
+      },
+      {
+        "id": 24,
+        "name": "Solo",
+        "description": "You may not party in this league."
+      }
+    ]
+  },
+  {
+    "id": "Betrayal",
+    "description": "#LeagueStandardBetrayal",
+    "registerAt": "2018-12-07T17:30:00Z",
+    "event": false,
+    "url": "http://pathofexile.com/forum/view-thread/2256698",
+    "startAt": "2018-12-07T19:00:00Z",
+    "endAt": "2019-03-04T21:00:00Z",
+    "delveEvent": true,
+    "rules": []
+  },
+  {
+    "id": "Hardcore Betrayal",
+    "description": "#LeagueHardcoreBetrayal",
+    "registerAt": "2018-12-07T17:30:00Z",
+    "event": false,
+    "url": "http://pathofexile.com/forum/view-thread/2256701",
+    "startAt": "2018-12-07T19:00:00Z",
+    "endAt": "2019-03-04T21:00:00Z",
+    "delveEvent": true,
+    "rules": [
+      {
+        "id": 4,
+        "name": "Hardcore",
+        "description": "A character killed in Hardcore is moved to its parent league."
+      }
+    ]
+  },
+  {
+    "id": "SSF Betrayal",
+    "description": "#LeagueStandardSSFBetrayal",
+    "registerAt": "2018-12-07T17:30:00Z",
+    "event": false,
+    "url": "http://pathofexile.com/forum/view-thread/2256702",
+    "startAt": "2018-12-07T19:00:00Z",
+    "endAt": "2019-03-04T21:00:00Z",
+    "delveEvent": true,
+    "rules": [
+      {
+        "id": 24,
+        "name": "Solo",
+        "description": "You may not party in this league."
+      }
+    ]
+  },
+  {
+    "id": "SSF Betrayal HC",
+    "description": "#LeagueHardcoreSSFBetrayal",
+    "registerAt": "2018-12-07T17:30:00Z",
+    "event": false,
+    "url": "http://pathofexile.com/forum/view-thread/2256703",
+    "startAt": "2018-12-07T19:00:00Z",
+    "endAt": "2019-03-04T21:00:00Z",
+    "delveEvent": true,
+    "rules": [
+      {
+        "id": 4,
+        "name": "Hardcore",
+        "description": "A character killed in Hardcore is moved to its parent league."
+      },
+      {
+        "id": 24,
+        "name": "Solo",
+        "description": "You may not party in this league."
+      }
+    ]
+  }
+]
