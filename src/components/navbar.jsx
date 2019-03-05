@@ -1,9 +1,15 @@
 import React, { Component } from "react";
-import { Navbar, NavDropdown, Nav, Dropdown } from "react-bootstrap";
+import { Navbar, NavDropdown, Nav, Form, FormControl } from "react-bootstrap";
 
 class Navigator extends Component {
   render() {
-    const { leagues, currentLeague, onLeagueClick } = this.props;
+    const {
+      leagues,
+      currentLeague,
+      onLeagueClick,
+      onAscendancyEnterPress,
+      onNameEnterPress
+    } = this.props;
     return (
       <Navbar expand="md" bg="dark" variant="dark">
         <Navbar.Brand href="#home">Exalt-Ladder</Navbar.Brand>
@@ -20,10 +26,22 @@ class Navigator extends Component {
                 </NavDropdown.Item>
               ))}
             </NavDropdown>
-            <Nav.Link href="#deets">More deets</Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
-              Dank memes
-            </Nav.Link>
+            <Form inline>
+              <FormControl
+                type="text"
+                placeholder="Ascendancy"
+                className="mr-sm-2"
+                onKeyPress={e => onAscendancyEnterPress(e)}
+              />
+            </Form>
+            <Form inline>
+              <FormControl
+                type="text"
+                placeholder="Character Name"
+                className="mr-sm-2"
+                onKeyPress={e => onNameEnterPress(e)}
+              />
+            </Form>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

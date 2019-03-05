@@ -10,13 +10,25 @@ class App extends Component {
     leagues: [],
     currentLeague: "Standard",
     limit: 5,
-    ascdendancy: ""
+    ascdendancy: "",
+    name: ""
   };
 
   handleLeagueClick = league => {
-    console.log(league);
     const currentLeague = league;
     this.setState({ currentLeague });
+  };
+
+  handleAscendancyEnterPress = e => {
+    if (e.key == "Enter" && e.target.value) {
+      this.setState({ ascdendancy: e.target.value });
+    }
+  };
+
+  handleNameEnterPress = e => {
+    if (e.key == "Enter" && e.target.value) {
+      this.setState({ name: e.target.value });
+    }
   };
 
   componentDidMount() {
@@ -74,6 +86,8 @@ class App extends Component {
           leagues={this.state.leagues}
           currentLeague={this.state.currentLeague}
           onLeagueClick={this.handleLeagueClick}
+          onAscendancyEnterPress={this.handleAscendancyEnterPress}
+          onNameEnterPress={this.handleNameEnterPress}
         />
 
         <main className="container">
