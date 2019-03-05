@@ -3,17 +3,19 @@ import { Navbar, NavDropdown, Nav, Dropdown } from "react-bootstrap";
 
 class Navigator extends Component {
   render() {
-    const leagues = this.props.leagues;
-    console.log(this.props.leagues);
+    const { leagues, currentLeague, onLeagueClick } = this.props;
     return (
-      <Navbar expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+      <Navbar expand="md" bg="dark" variant="dark">
+        <Navbar.Brand href="#home">Exalt-Ladder</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
+            <NavDropdown title={currentLeague}>
               {leagues.map(league => (
-                <NavDropdown.Item eventKey={league.description}>
+                <NavDropdown.Item
+                  eventKey={league.description}
+                  onClick={() => onLeagueClick(league.id)}
+                >
                   {league.id}
                 </NavDropdown.Item>
               ))}

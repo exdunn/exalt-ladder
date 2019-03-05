@@ -7,7 +7,16 @@ import Ladder from "./components/ladder";
 class App extends Component {
   state = {
     entries: [],
-    leagues: []
+    leagues: [],
+    currentLeague: "Standard",
+    limit: 5,
+    ascdendancy: ""
+  };
+
+  handleLeagueClick = league => {
+    console.log(league);
+    const currentLeague = league;
+    this.setState({ currentLeague });
   };
 
   componentDidMount() {
@@ -61,7 +70,11 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navigator leagues={this.state.leagues} />
+        <Navigator
+          leagues={this.state.leagues}
+          currentLeague={this.state.currentLeague}
+          onLeagueClick={this.handleLeagueClick}
+        />
 
         <main className="container">
           <Ladder entries={this.state.entries} />
