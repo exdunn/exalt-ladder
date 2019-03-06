@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Navbar, NavDropdown, Nav, Form, FormControl } from "react-bootstrap";
+import {
+  Col,
+  Navbar,
+  NavDropdown,
+  Nav,
+  Form,
+  FormControl
+} from "react-bootstrap";
 
 class Navigator extends Component {
   render() {
@@ -13,41 +20,47 @@ class Navigator extends Component {
       onNameEnterPress
     } = this.props;
     return (
-      <Navbar expand="sm" bg="dark" variant="dark">
+      <Navbar expand="md" bg="dark" variant="dark">
         <Navbar.Brand href="#home">Exalt-Ladder</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <NavDropdown title={curLeag}>
-              {leagues.map(league => (
-                <NavDropdown.Item
-                  eventKey={league.description}
-                  onClick={() => onLeagueClick(league.id)}
-                >
-                  {league.id}
-                </NavDropdown.Item>
-              ))}
-            </NavDropdown>
+            <Col>
+              <NavDropdown title={curLeag}>
+                {leagues.map(league => (
+                  <NavDropdown.Item
+                    eventKey={league.description}
+                    onClick={() => onLeagueClick(league.id)}
+                  >
+                    {league.id}
+                  </NavDropdown.Item>
+                ))}
+              </NavDropdown>
+            </Col>
 
-            <NavDropdown title={curAscd}>
-              {ascendancies.map(ascd => (
-                <NavDropdown.Item
-                  eventKey={ascd.description}
-                  onClick={() => onAscdClick(ascd)}
-                >
-                  {ascd}
-                </NavDropdown.Item>
-              ))}
-            </NavDropdown>
+            <Col>
+              <NavDropdown title={curAscd}>
+                {ascendancies.map(ascd => (
+                  <NavDropdown.Item
+                    eventKey={ascd.description}
+                    onClick={() => onAscdClick(ascd)}
+                  >
+                    {ascd}
+                  </NavDropdown.Item>
+                ))}
+              </NavDropdown>
+            </Col>
 
-            <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Character Name"
-                className="mr-sm-2"
-                onKeyPress={e => onNameEnterPress(e)}
-              />
-            </Form>
+            <Col>
+              <Form inline>
+                <FormControl
+                  type="text"
+                  placeholder="Character Name"
+                  className="mr-sm-2"
+                  onKeyPress={e => onNameEnterPress(e)}
+                />
+              </Form>
+            </Col>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

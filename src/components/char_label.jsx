@@ -7,9 +7,9 @@ class CharLabel extends Component {
     return (
       <div className="card m-2">
         <div className="row no-gutters p-2">
-          <div className="col-4 pl-4">{char.name}</div>
-          <div className="col-4">{char.level}</div>
-          <div className="col-4">{char.class}</div>
+          <div className="col">{char.name}</div>
+          <div className="col">{char.level}</div>
+          <div className="col">{char.class}</div>
         </div>
       </div>
     );
