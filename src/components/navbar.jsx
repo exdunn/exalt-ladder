@@ -5,18 +5,20 @@ class Navigator extends Component {
   render() {
     const {
       leagues,
-      currentLeague,
+      ascendancies,
+      curAscd,
+      curLeag,
       onLeagueClick,
-      onAscendancyEnterPress,
+      onAscdClick,
       onNameEnterPress
     } = this.props;
     return (
-      <Navbar expand="md" bg="dark" variant="dark">
+      <Navbar expand="sm" bg="dark" variant="dark">
         <Navbar.Brand href="#home">Exalt-Ladder</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <NavDropdown title={currentLeague}>
+            <NavDropdown title={curLeag}>
               {leagues.map(league => (
                 <NavDropdown.Item
                   eventKey={league.description}
@@ -26,14 +28,18 @@ class Navigator extends Component {
                 </NavDropdown.Item>
               ))}
             </NavDropdown>
-            <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Ascendancy"
-                className="mr-sm-2"
-                onKeyPress={e => onAscendancyEnterPress(e)}
-              />
-            </Form>
+
+            <NavDropdown title={curAscd}>
+              {ascendancies.map(ascd => (
+                <NavDropdown.Item
+                  eventKey={ascd.description}
+                  onClick={() => onAscdClick(ascd)}
+                >
+                  {ascd}
+                </NavDropdown.Item>
+              ))}
+            </NavDropdown>
+
             <Form inline>
               <FormControl
                 type="text"

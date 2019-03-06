@@ -8,15 +8,50 @@ class App extends Component {
   state = {
     entries: [],
     leagues: [],
-    currentLeague: "Standard",
+    ascendancies: [
+      "All",
+      "Maurader",
+      "Duelist",
+      "Ranger",
+      "Shadow",
+      "Witch",
+      "Templar",
+      "Scion",
+      "Juggernaut",
+      "Berserker",
+      "Chieftain",
+      "Slayer",
+      "Gladiator",
+      "Champion",
+      "Deadeye",
+      "Raider",
+      "Pathfinder",
+      "Assassin",
+      "Saboteur",
+      "Trickster",
+      "Necromancer",
+      "Occultist",
+      "Elementalist",
+      "Inquisitor",
+      "Hierophant",
+      "Guardian",
+      "Ascendant"
+    ],
+    curAscd: "All",
+    curLeag: "Standard",
     limit: 5,
     ascdendancy: "",
     name: ""
   };
 
   handleLeagueClick = league => {
-    const currentLeague = league;
-    this.setState({ currentLeague });
+    const curLeag = league;
+    this.setState({ curLeag });
+  };
+
+  handleAscdClick = ascd => {
+    const curAscd = ascd;
+    this.setState({ curAscd });
   };
 
   handleAscendancyEnterPress = e => {
@@ -84,9 +119,11 @@ class App extends Component {
       <React.Fragment>
         <Navigator
           leagues={this.state.leagues}
-          currentLeague={this.state.currentLeague}
+          ascendancies={this.state.ascendancies}
+          curAscd={this.state.curAscd}
+          curLeag={this.state.curLeag}
           onLeagueClick={this.handleLeagueClick}
-          onAscendancyEnterPress={this.handleAscendancyEnterPress}
+          onAscdClick={this.handleAscdClick}
           onNameEnterPress={this.handleNameEnterPress}
         />
 
