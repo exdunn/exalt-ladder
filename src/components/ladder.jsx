@@ -5,14 +5,20 @@ import "../css/ladder.css";
 
 class Ladder extends Component {
   render() {
-    const { limit, entries, curPage, onPageClick } = this.props;
+    const {
+      limit,
+      max,
+      itemsPerPage,
+      entries,
+      curPage,
+      onPageClick
+    } = this.props;
     const items = [];
-    for (
-      var i = Math.max(1, curPage - 5);
-      i < Math.min(limit / 50, curPage + 6);
-      i++
-    ) {
-      items.push(i);
+    const paginationStartIndex = Math.max(1, curPage - 5);
+    for (var i = paginationStartIndex; i < paginationStartIndex + 10; i++) {
+      if (i < max / itemsPerPage) {
+        items.push(i);
+      }
     }
 
     return (
@@ -21,9 +27,13 @@ class Ladder extends Component {
           <CharLabel key={entry.id} entry={entry} />
         ))}
 
-        <Pagination size="sm" className="py-2">
+        <Pagination className="py-2">
           {items.map(item => (
-            <PageItem id="pageItem" onClick={() => onPageClick(item)}>
+            <PageItem
+              id="pageItem"
+              active={item === curPage}
+              onClick={() => onPageClick(item)}
+            >
               {item}
             </PageItem>
           ))}

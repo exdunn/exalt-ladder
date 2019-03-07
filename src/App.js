@@ -41,13 +41,15 @@ class App extends Component {
     curAscd: "All",
     curLeag: "Standard",
     curPage: 0,
-    limit: 2500,
+    itemsPerPage: 20,
+    limit: 200,
+    max: 1000,
     ascdendancy: "",
     name: ""
   };
 
   handlePageClick = index => {
-    console.log(index);
+    this.setState({ curPage: index });
   };
 
   handleLeagueClick = league => {
@@ -74,7 +76,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getLeagues();
-    this.handleAPIRequest(5);
+    this.handleAPIRequest();
   }
 
   // set API request to get JSON data containing list of league information
@@ -103,31 +105,39 @@ class App extends Component {
     }
   }
 
-  handleAPIRequest(limit) {
-    const url =
-      "http://api.pathofexile.com/ladders/Betrayal?offset=1&limit=" + limit;
+  handleAPIRequest() {
+    if (this.state.entries.length < this.state.max) {
+      for (let i = 0; i < 5; i++) {
+        try {
+          let url =
+            "http://api.pathofexile.com/ladders/Betrayal?offset=" +
+            i * 200 +
+            "&" +
+            "limit=" +
+            this.state.limit;
 
-    try {
-      console.log("Sending API call:", url);
-      axios
-        .get(url)
-        .then(response => {
-          const data = response.data;
-          const entries = [];
-          for (const [i, entry] of data.entries.entries()) {
-            entries.push({
-              id: i,
-              char: entry.character,
-              account: entry.account
+          console.log("Sending API call:", url);
+          axios
+            .get(url)
+            .then(response => {
+              const data = response.data;
+              const entries = this.state.entries;
+              for (const [j, entry] of data.entries.entries()) {
+                entries.push({
+                  id: j + i * 200,
+                  char: entry.character,
+                  account: entry.account
+                });
+              }
+              this.setState({ entries });
+            })
+            .catch(e => {
+              console.error("Error caught sending API call", url, e);
             });
-          }
-          this.setState({ entries });
-        })
-        .catch(e => {
-          console.error("Error caught sending API call", url, e);
-        });
-    } catch (e) {
-      console.log(e);
+        } catch (e) {
+          console.log(e);
+        }
+      }
     }
   }
 
@@ -148,7 +158,12 @@ class App extends Component {
 
             <Ladder
               limit={this.state.limit}
-              entries={this.state.entries}
+              max={this.state.entries.length}
+              itemsPerPage={this.state.itemsPerPage}
+              entries={this.state.entries.slice(
+                this.state.curPage * this.state.itemsPerPage,
+                this.state.curPage * this.state.itemsPerPage + 20
+              )}
               curPage={this.state.curPage}
               onPageClick={this.handlePageClick}
             />
