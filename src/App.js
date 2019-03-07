@@ -8,6 +8,7 @@ import { Container } from "react-bootstrap";
 class App extends Component {
   state = {
     entries: [],
+    matchingEntries: [],
     leagues: [],
     ascendancies: [
       "All",
@@ -43,18 +44,81 @@ class App extends Component {
     curPage: 0,
     itemsPerPage: 20,
     limit: 200,
-    max: 1000,
-    ascdendancy: "",
     name: ""
   };
 
   handlePageClick = index => {
     this.setState({ curPage: index });
+
+    if ((index + 1) * this.state.itemsPerPage >= this.state.entries.length) {
+      const entries = this.state.entries;
+      let url =
+        "http://api.pathofexile.com/ladders/Betrayal?offset=" +
+        this.state.entries.length +
+        "&" +
+        "limit=" +
+        this.state.limit;
+      console.log("Sending API call:", url);
+      try {
+        axios
+          .get(url)
+          .then(response => {
+            const data = response.data;
+            for (const entry of data.entries) {
+              entries.push({
+                id: entry.rank,
+                char: entry.character,
+                account: entry.account
+              });
+            }
+            this.setState({ entries });
+          })
+          .catch(e => {
+            console.error("Error caught sending API call", url, e);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   handleLeagueClick = league => {
+    if (this.state.curLeag === league) {
+      return;
+    }
+
     const curLeag = league;
     this.setState({ curLeag });
+    const entries = [];
+
+    try {
+      let url =
+        "http://api.pathofexile.com/ladders/Betrayal?offset=" +
+        this.state.entries.length +
+        "&" +
+        "limit=" +
+        this.state.limit;
+
+      console.log("Sending API call:", url);
+      axios
+        .get(url)
+        .then(response => {
+          const data = response.data;
+          for (const entry of data.entries) {
+            entries.push({
+              id: entry.rank,
+              character: entry.character,
+              account: entry.account
+            });
+          }
+          this.setState({ entries });
+        })
+        .catch(e => {
+          console.error("Error caught sending API call", url, e);
+        });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   handleAscdClick = ascd => {
@@ -76,7 +140,6 @@ class App extends Component {
 
   componentDidMount() {
     this.getLeagues();
-    this.handleAPIRequest();
   }
 
   // set API request to get JSON data containing list of league information
@@ -105,42 +168,6 @@ class App extends Component {
     }
   }
 
-  handleAPIRequest() {
-    if (this.state.entries.length < this.state.max) {
-      for (let i = 0; i < 5; i++) {
-        try {
-          let url =
-            "http://api.pathofexile.com/ladders/Betrayal?offset=" +
-            i * 200 +
-            "&" +
-            "limit=" +
-            this.state.limit;
-
-          console.log("Sending API call:", url);
-          axios
-            .get(url)
-            .then(response => {
-              const data = response.data;
-              const entries = this.state.entries;
-              for (const [j, entry] of data.entries.entries()) {
-                entries.push({
-                  id: j + i * 200,
-                  char: entry.character,
-                  account: entry.account
-                });
-              }
-              this.setState({ entries });
-            })
-            .catch(e => {
-              console.error("Error caught sending API call", url, e);
-            });
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    }
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -157,14 +184,10 @@ class App extends Component {
             />
 
             <Ladder
-              limit={this.state.limit}
-              max={this.state.entries.length}
-              itemsPerPage={this.state.itemsPerPage}
-              entries={this.state.entries.slice(
-                this.state.curPage * this.state.itemsPerPage,
-                this.state.curPage * this.state.itemsPerPage + 20
-              )}
+              ascendancy={this.state.curAscd}
+              entries={this.state.entries}
               curPage={this.state.curPage}
+              itemsPerPage={this.state.itemsPerPage}
               onPageClick={this.handlePageClick}
             />
           </Container>

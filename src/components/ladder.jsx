@@ -6,24 +6,31 @@ import "../css/ladder.css";
 class Ladder extends Component {
   render() {
     const {
-      limit,
-      max,
       itemsPerPage,
       entries,
       curPage,
+      ascendancy,
       onPageClick
     } = this.props;
+
+    const entriesOnPage = entries
+      .filter(
+        entry => ascendancy === "All" || entry.character.class === ascendancy
+      )
+      .slice(curPage * itemsPerPage, curPage * itemsPerPage + 20);
+
+    console.log(ascendancy, entriesOnPage);
     const items = [];
     const paginationStartIndex = Math.max(1, curPage - 5);
     for (var i = paginationStartIndex; i < paginationStartIndex + 10; i++) {
-      if (i < max / itemsPerPage) {
+      if (i < entries.length / itemsPerPage) {
         items.push(i);
       }
     }
 
     return (
       <div>
-        {entries.map(entry => (
+        {entriesOnPage.map(entry => (
           <CharLabel key={entry.id} entry={entry} />
         ))}
 
