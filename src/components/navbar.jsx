@@ -68,7 +68,7 @@ class Navigator extends Component {
 
             <Col>
               <OverlayTrigger
-                placement={"top"}
+                placement={"right"}
                 overlay={<Tooltip>Click to load more characters!</Tooltip>}
               >
                 <Button

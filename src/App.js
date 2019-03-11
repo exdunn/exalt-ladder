@@ -53,92 +53,6 @@ class App extends Component {
     this.getLeagues();
   }
 
-  sendLadderAPIRequest = (limit, offset, league) => {
-    if (offset >= this.state.max) {
-      console.log("Max entries reached.");
-      return;
-    }
-
-    const url =
-      "http://api.pathofexile.com/ladders/" +
-      league +
-      "?offset=" +
-      offset +
-      "&limit=" +
-      limit;
-    console.log("Sending API call:", url);
-    return axios.get(url);
-  };
-
-  handlePageClick = index => {
-    if (index * this.state.itemsPerPage > this.state.entries.length) {
-      try {
-        const entries = [];
-        this.sendLadderAPIRequest(this.state.limit, 0, this.state.curLeag).then(
-          response => {
-            console.log(response);
-            for (const entry of response.data.entries) {
-              entries.push({
-                id: entry.character.id,
-                character: entry.character,
-                account: entry.account
-              });
-            }
-            this.setState({ entries });
-          }
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    this.setState({ curPage: index });
-  };
-
-  handleLeagueClick = league => {
-    if (this.state.curLeag === league) {
-      return;
-    }
-    this.setState({ curLeag: league });
-
-    try {
-      const entries = [];
-      this.sendLadderAPIRequest(this.state.limit, 0, league).then(response => {
-        console.log(response);
-        for (const entry of response.data.entries) {
-          entries.push({
-            id: entry.character.id,
-            character: entry.character,
-            account: entry.account
-          });
-        }
-        this.setState({ entries });
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  handleAscdClick = ascd => {
-    const curAscd = ascd;
-    this.setState({ curAscd });
-  };
-
-  handleAscendancyEnterPress = e => {
-    if (e.key === "Enter" && e.target.value) {
-      this.setState({ ascdendancy: e.target.value });
-    }
-  };
-
-  handleNameEnterPress = e => {
-    if (e.key == "Enter" && e.target.value) {
-      this.setState({ name: e.target.value });
-    }
-  };
-
-  handleLoadMoreClick = () => {
-    console.log("Load More Clicked!");
-  };
-
   // set API request to get JSON data containing list of league information
   getLeagues() {
     const url = "http://api.pathofexile.com/leagues";
@@ -164,6 +78,78 @@ class App extends Component {
       console.error(e);
     }
   }
+
+  sendLadderAPIRequest = (limit, offset, league) => {
+    if (offset >= this.state.max) {
+      console.log("Max entries reached.");
+      return;
+    }
+    const url =
+      "http://api.pathofexile.com/ladders/" +
+      league +
+      "?offset=" +
+      offset +
+      "&limit=" +
+      limit;
+    console.log("Sending API call:", url);
+    return axios.get(url);
+  };
+
+  // sends ladder API request and adds response to state.entries
+  sendAndHandleLaddAPIRequest = (limit, offset, league, entries) => {
+    try {
+      this.sendLadderAPIRequest(limit, offset, league).then(response => {
+        for (const entry of response.data.entries) {
+          entries.push({
+            id: entry.character.id,
+            character: entry.character,
+            account: entry.account
+          });
+        }
+        this.setState({ entries });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  handlePageClick = index => {
+    this.setState({ curPage: index });
+  };
+
+  handleLeagueClick = league => {
+    if (this.state.curLeag === league) {
+      return;
+    }
+    this.setState({ curLeag: league });
+    this.sendAndHandleLaddAPIRequest(this.state.limit, 0, league, []);
+  };
+
+  handleAscdClick = ascd => {
+    const curAscd = ascd;
+    this.setState({ curAscd });
+  };
+
+  handleAscendancyEnterPress = e => {
+    if (e.key === "Enter" && e.target.value) {
+      this.setState({ ascdendancy: e.target.value });
+    }
+  };
+
+  handleNameEnterPress = e => {
+    if (e.key == "Enter" && e.target.value) {
+      this.setState({ name: e.target.value });
+    }
+  };
+
+  handleLoadMoreClick = () => {
+    this.sendAndHandleLaddAPIRequest(
+      this.state.limit,
+      this.state.entries.length - 1,
+      this.state.curLeag,
+      this.state.entries
+    );
+  };
 
   render() {
     return (
