@@ -45,7 +45,7 @@ class Ladder extends Component {
             <CharLabel key={entry.id} entry={entry} />
           ))}
 
-        <Pagination className="py-2">
+        <Pagination>
           {items.map(item => (
             <PageItem
               id="pageItem"

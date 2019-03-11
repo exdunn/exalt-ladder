@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import {
+  Button,
   Col,
+  Form,
+  FormControl,
   Navbar,
   NavDropdown,
   Nav,
-  Form,
-  FormControl
+  Tooltip,
+  OverlayTrigger
 } from "react-bootstrap";
 
 class Navigator extends Component {
@@ -17,7 +20,8 @@ class Navigator extends Component {
       curLeag,
       onLeagueClick,
       onAscdClick,
-      onNameEnterPress
+      onNameEnterPress,
+      onLoadMoreClick
     } = this.props;
     return (
       <Navbar expand="md" bg="dark" variant="dark">
@@ -60,6 +64,23 @@ class Navigator extends Component {
                   onKeyPress={e => onNameEnterPress(e)}
                 />
               </Form>
+            </Col>
+
+            <Col>
+              <OverlayTrigger
+                placement={"top"}
+                overlay={<Tooltip>Click to load more characters!</Tooltip>}
+              >
+                <Button
+                  variant="primary"
+                  style={{
+                    display: curLeag === "Select" ? "none" : "inline"
+                  }}
+                  onClick={() => onLoadMoreClick()}
+                >
+                  Load
+                </Button>
+              </OverlayTrigger>
             </Col>
           </Nav>
         </Navbar.Collapse>

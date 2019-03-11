@@ -135,6 +135,10 @@ class App extends Component {
     }
   };
 
+  handleLoadMoreClick = () => {
+    console.log("Load More Clicked!");
+  };
+
   // set API request to get JSON data containing list of league information
   getLeagues() {
     const url = "http://api.pathofexile.com/leagues";
@@ -174,6 +178,7 @@ class App extends Component {
               onLeagueClick={this.handleLeagueClick}
               onAscdClick={this.handleAscdClick}
               onNameEnterPress={this.handleNameEnterPress}
+              onLoadMoreClick={this.handleLoadMoreClick}
             />
 
             <Ladder
