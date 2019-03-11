@@ -4,6 +4,7 @@ import "./App.css";
 import Navigator from "./components/navbar";
 import Ladder from "./components/ladder";
 import { Container } from "react-bootstrap";
+import { PassThrough } from "stream";
 
 class App extends Component {
   state = {
@@ -40,82 +41,78 @@ class App extends Component {
       "Ascendant"
     ],
     curAscd: "All",
-    curLeag: "Standard",
-    curPage: 0,
+    curLeag: "Select",
+    curPage: 1,
     itemsPerPage: 20,
     limit: 200,
+    max: 2000,
     name: ""
   };
 
-  handlePageClick = index => {
-    this.setState({ curPage: index });
+  componentDidMount() {
+    this.getLeagues();
+  }
 
-    if ((index + 1) * this.state.itemsPerPage >= this.state.entries.length) {
-      const entries = this.state.entries;
-      let url =
-        "http://api.pathofexile.com/ladders/Betrayal?offset=" +
-        this.state.entries.length +
-        "&" +
-        "limit=" +
-        this.state.limit;
-      console.log("Sending API call:", url);
+  sendLadderAPIRequest = (limit, offset, league) => {
+    if (offset >= this.state.max) {
+      console.log("Max entries reached.");
+      return;
+    }
+
+    const url =
+      "http://api.pathofexile.com/ladders/" +
+      league +
+      "?offset=" +
+      offset +
+      "&limit=" +
+      limit;
+    console.log("Sending API call:", url);
+    return axios.get(url);
+  };
+
+  handlePageClick = index => {
+    if (index * this.state.itemsPerPage > this.state.entries.length) {
       try {
-        axios
-          .get(url)
-          .then(response => {
-            const data = response.data;
-            for (const entry of data.entries) {
+        const entries = [];
+        this.sendLadderAPIRequest(this.state.limit, 0, this.state.curLeag).then(
+          response => {
+            console.log(response);
+            for (const entry of response.data.entries) {
               entries.push({
-                id: entry.rank,
-                char: entry.character,
+                id: entry.character.id,
+                character: entry.character,
                 account: entry.account
               });
             }
             this.setState({ entries });
-          })
-          .catch(e => {
-            console.error("Error caught sending API call", url, e);
-          });
+          }
+        );
       } catch (e) {
         console.log(e);
       }
     }
+    this.setState({ curPage: index });
   };
 
   handleLeagueClick = league => {
     if (this.state.curLeag === league) {
       return;
     }
-
-    const curLeag = league;
-    this.setState({ curLeag });
-    const entries = [];
+    this.setState({ curLeag: league });
 
     try {
-      let url =
-        "http://api.pathofexile.com/ladders/Betrayal?offset=" +
-        this.state.entries.length +
-        "&" +
-        "limit=" +
-        this.state.limit;
-
-      console.log("Sending API call:", url);
-      axios
-        .get(url)
-        .then(response => {
-          const data = response.data;
-          for (const entry of data.entries) {
-            entries.push({
-              id: entry.rank,
-              character: entry.character,
-              account: entry.account
-            });
-          }
-          this.setState({ entries });
-        })
-        .catch(e => {
-          console.error("Error caught sending API call", url, e);
-        });
+      const entries = [];
+      this.sendLadderAPIRequest(this.state.limit, 0, league).then(response => {
+        console.log(response);
+        for (const entry of response.data.entries) {
+          entries.push({
+            id: entry.character.id,
+            character: entry.character,
+            account: entry.account
+          });
+        }
+        this.setState({ entries });
+      });
     } catch (e) {
       console.log(e);
     }
@@ -137,10 +134,6 @@ class App extends Component {
       this.setState({ name: e.target.value });
     }
   };
-
-  componentDidMount() {
-    this.getLeagues();
-  }
 
   // set API request to get JSON data containing list of league information
   getLeagues() {
@@ -188,6 +181,7 @@ class App extends Component {
               entries={this.state.entries}
               curPage={this.state.curPage}
               itemsPerPage={this.state.itemsPerPage}
+              league={this.state.curLeag}
               onPageClick={this.handlePageClick}
             />
           </Container>

@@ -10,34 +10,46 @@ class Ladder extends Component {
       entries,
       curPage,
       ascendancy,
+      league,
       onPageClick
     } = this.props;
 
-    const entriesOnPage = entries
-      .filter(
-        entry => ascendancy === "All" || entry.character.class === ascendancy
-      )
-      .slice(curPage * itemsPerPage, curPage * itemsPerPage + 20);
-
-    console.log(ascendancy, entriesOnPage);
+    const filteredEntries = entries.filter(
+      entry => ascendancy === "All" || entry.character.class === ascendancy
+    );
     const items = [];
-    const paginationStartIndex = Math.max(1, curPage - 5);
-    for (var i = paginationStartIndex; i < paginationStartIndex + 10; i++) {
-      if (i < entries.length / itemsPerPage) {
-        items.push(i);
-      }
+    const paginationStartIndex = 1;
+    const paginationEndIndex = Math.min(
+      filteredEntries.length / itemsPerPage,
+      10
+    );
+
+    var message =
+      filteredEntries.length === 0
+        ? league === "Select"
+          ? "Select a league to continue..."
+          : "No matching characters found..."
+        : "";
+
+    // insert page numbers at the bottom of the screen
+    for (var i = paginationStartIndex; i <= paginationEndIndex; i++) {
+      items.push(i);
     }
 
     return (
       <div>
-        {entriesOnPage.map(entry => (
-          <CharLabel key={entry.id} entry={entry} />
-        ))}
+        <p>{message}</p>
+        {filteredEntries
+          .slice((curPage - 1) * itemsPerPage, curPage * itemsPerPage)
+          .map(entry => (
+            <CharLabel key={entry.id} entry={entry} />
+          ))}
 
         <Pagination className="py-2">
           {items.map(item => (
             <PageItem
               id="pageItem"
+              key={item}
               active={item === curPage}
               onClick={() => onPageClick(item)}
             >
