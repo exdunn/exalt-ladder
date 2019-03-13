@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Pagination, PageItem } from "react-bootstrap";
 import CharLabel from "./char_label";
+import PageBar from "./page_bar";
 import "../css/ladder.css";
 
 class Ladder extends Component {
@@ -19,7 +19,7 @@ class Ladder extends Component {
     const filteredEntries = entries.filter(
       entry => ascendancy === "All" || entry.character.class === ascendancy
     );
-    const items = [];
+    const pageNumbers = [];
     const pageCount = filteredEntries.length / itemsPerPage;
     const paginationStartIndex = Math.max(
       Math.floor((curPage - 1) / 10) * 10 + 1,
@@ -36,42 +36,35 @@ class Ladder extends Component {
 
     // insert page numbers at the bottom of the screen
     for (var i = paginationStartIndex; i <= paginationEndIndex; i++) {
-      items.push(i);
+      pageNumbers.push(i);
     }
 
     return (
       <div>
         <p>{message}</p>
+        <PageBar
+          hideArrows={filteredEntries.length === 0}
+          pageNumbers={pageNumbers}
+          pageCount={pageCount}
+          curPage={curPage}
+          onPrevClick={onPrevClick}
+          onPageClick={onPageClick}
+          onNextClick={onNextClick}
+        />
         {filteredEntries
           .slice((curPage - 1) * itemsPerPage, curPage * itemsPerPage)
           .map(entry => (
             <CharLabel key={entry.id} entry={entry} />
           ))}
-
-        <Pagination>
-          <Pagination.Prev
-            style={{
-              display: filteredEntries.length < 1 ? "none" : "inline"
-            }}
-            onClick={() => onPrevClick()}
-          />
-          {items.map(item => (
-            <PageItem
-              id="pageItem"
-              key={item}
-              active={item === curPage}
-              onClick={() => onPageClick(item)}
-            >
-              {item}
-            </PageItem>
-          ))}
-          <Pagination.Next
-            style={{
-              display: filteredEntries.length < 1 ? "none" : "inline"
-            }}
-            onClick={() => onNextClick(pageCount)}
-          />
-        </Pagination>
+        <PageBar
+          hideArrows={filteredEntries.length === 0}
+          pageNumbers={pageNumbers}
+          pageCount={pageCount}
+          curPage={curPage}
+          onPrevClick={onPrevClick}
+          onPageClick={onPageClick}
+          onNextClick={onNextClick}
+        />
       </div>
     );
   }
