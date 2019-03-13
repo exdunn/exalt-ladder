@@ -11,18 +11,21 @@ class Ladder extends Component {
       curPage,
       ascendancy,
       league,
-      onPageClick
+      onPageClick,
+      onPrevClick,
+      onNextClick
     } = this.props;
 
     const filteredEntries = entries.filter(
       entry => ascendancy === "All" || entry.character.class === ascendancy
     );
     const items = [];
-    const paginationStartIndex = 1;
-    const paginationEndIndex = Math.min(
-      filteredEntries.length / itemsPerPage,
-      10
+    const pageCount = filteredEntries.length / itemsPerPage;
+    const paginationStartIndex = Math.max(
+      Math.floor((curPage - 1) / 10) * 10 + 1,
+      1
     );
+    const paginationEndIndex = Math.min(paginationStartIndex + 9, pageCount);
 
     var message =
       filteredEntries.length === 0
@@ -46,6 +49,12 @@ class Ladder extends Component {
           ))}
 
         <Pagination>
+          <Pagination.Prev
+            style={{
+              display: filteredEntries.length < 1 ? "none" : "inline"
+            }}
+            onClick={() => onPrevClick()}
+          />
           {items.map(item => (
             <PageItem
               id="pageItem"
@@ -56,6 +65,12 @@ class Ladder extends Component {
               {item}
             </PageItem>
           ))}
+          <Pagination.Next
+            style={{
+              display: filteredEntries.length < 1 ? "none" : "inline"
+            }}
+            onClick={() => onNextClick(pageCount)}
+          />
         </Pagination>
       </div>
     );

@@ -43,7 +43,7 @@ class App extends Component {
     curAscd: "All",
     curLeag: "Select",
     curPage: 1,
-    itemsPerPage: 20,
+    itemsPerPage: 50,
     limit: 200,
     max: 2000,
     name: ""
@@ -117,6 +117,18 @@ class App extends Component {
     this.setState({ curPage: index });
   };
 
+  handlePrevClick = () => {
+    if (this.state.curPage > 1) {
+      this.setState({ curPage: this.state.curPage - 1 });
+    }
+  };
+
+  handleNextClick = pageCount => {
+    if (this.state.curPage < pageCount) {
+      this.setState({ curPage: this.state.curPage + 1 });
+    }
+  };
+
   handleLeagueClick = league => {
     if (this.state.curLeag === league) {
       return;
@@ -166,7 +178,6 @@ class App extends Component {
               onNameEnterPress={this.handleNameEnterPress}
               onLoadMoreClick={this.handleLoadMoreClick}
             />
-
             <Ladder
               ascendancy={this.state.curAscd}
               entries={this.state.entries}
@@ -174,6 +185,8 @@ class App extends Component {
               itemsPerPage={this.state.itemsPerPage}
               league={this.state.curLeag}
               onPageClick={this.handlePageClick}
+              onPrevClick={this.handlePrevClick}
+              onNextClick={this.handleNextClick}
             />
           </Container>
         </main>
