@@ -42,6 +42,7 @@ class App extends Component {
     ],
     curAscd: "All",
     curLeag: "Select",
+    account: "",
     curPage: 1,
     itemsPerPage: 50,
     limit: 200,
@@ -79,7 +80,7 @@ class App extends Component {
     }
   }
 
-  sendLadderAPIRequest = (limit, offset, league) => {
+  sendLadderAPIRequest = (limit, offset, league, account) => {
     if (offset >= this.state.max) {
       console.log("Max entries reached.");
       return;
@@ -90,24 +91,27 @@ class App extends Component {
       "?offset=" +
       offset +
       "&limit=" +
-      limit;
+      limit +
+      (account ? "&accountName=" + account : "");
     console.log("Sending API call:", url);
     return axios.get(url);
   };
 
   // sends ladder API request and adds response to state.entries
-  sendAndHandleLaddAPIRequest = (limit, offset, league, entries) => {
+  sendAndHandleLaddAPIRequest = (limit, offset, league, account, entries) => {
     try {
-      this.sendLadderAPIRequest(limit, offset, league).then(response => {
-        for (const entry of response.data.entries) {
-          entries.push({
-            id: entry.character.id,
-            character: entry.character,
-            account: entry.account
-          });
+      this.sendLadderAPIRequest(limit, offset, league, account).then(
+        response => {
+          for (const entry of response.data.entries) {
+            entries.push({
+              id: entry.character.id,
+              character: entry.character,
+              account: entry.account
+            });
+          }
+          this.setState({ entries });
         }
-        this.setState({ entries });
-      });
+      );
     } catch (e) {
       console.log(e);
     }
@@ -134,7 +138,8 @@ class App extends Component {
       return;
     }
     this.setState({ curLeag: league });
-    this.sendAndHandleLaddAPIRequest(this.state.limit, 0, league, []);
+    this.setState({ account: "" });
+    this.sendAndHandleLaddAPIRequest(this.state.limit, 0, league, "", []);
   };
 
   handleAscdClick = ascd => {
@@ -148,9 +153,20 @@ class App extends Component {
     }
   };
 
-  handleNameEnterPress = e => {
-    if (e.key == "Enter" && e.target.value) {
-      this.setState({ name: e.target.value });
+  handleAccountChange = e => {
+    this.setState({ account: e.target.value });
+  };
+
+  handleAccountEnterPress = e => {
+    if (e.key === "Enter" && e.target.value) {
+      e.preventDefault();
+      this.sendAndHandleLaddAPIRequest(
+        this.state.limit,
+        this.state.entries.length - 1,
+        this.state.curLeag,
+        e.target.value,
+        []
+      );
     }
   };
 
@@ -159,6 +175,7 @@ class App extends Component {
       this.state.limit,
       this.state.entries.length - 1,
       this.state.curLeag,
+      this.state.account,
       this.state.entries
     );
   };
@@ -173,9 +190,11 @@ class App extends Component {
               ascendancies={this.state.ascendancies}
               curAscd={this.state.curAscd}
               curLeag={this.state.curLeag}
+              account={this.state.account}
               onLeagueClick={this.handleLeagueClick}
               onAscdClick={this.handleAscdClick}
-              onNameEnterPress={this.handleNameEnterPress}
+              onAccountChange={this.handleAccountChange}
+              onNameEnterPress={this.handleAccountEnterPress}
               onLoadMoreClick={this.handleLoadMoreClick}
             />
             <Ladder

@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import CharLabel from "./char_label";
 import PageBar from "./page_bar";
 import "../css/ladder.css";
 
 class Ladder extends Component {
+  filter = entries => {};
+
   render() {
     const {
       itemsPerPage,

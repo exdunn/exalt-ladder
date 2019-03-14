@@ -18,8 +18,10 @@ class Navigator extends Component {
       ascendancies,
       curAscd,
       curLeag,
+      account,
       onLeagueClick,
       onAscdClick,
+      onAccountChange,
       onNameEnterPress,
       onLoadMoreClick
     } = this.props;
@@ -59,8 +61,10 @@ class Navigator extends Component {
               <Form inline>
                 <FormControl
                   type="text"
-                  placeholder="Character Name"
+                  placeholder="Account"
                   className="mr-sm-2"
+                  value={account}
+                  onChange={e => onAccountChange(e)}
                   onKeyPress={e => onNameEnterPress(e)}
                 />
               </Form>
