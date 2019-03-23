@@ -8,9 +8,9 @@ import { PassThrough } from "stream";
 
 class App extends Component {
   state = {
-    entries: [],
+    ladders: [],
     matchingEntries: [],
-    leagues: [],
+    leagues: ["Synthesis", "Hardcore Synthesis"],
     ascendancies: [
       "All",
       "Maurader",
@@ -41,7 +41,7 @@ class App extends Component {
       "Ascendant"
     ],
     curAscd: "All",
-    curLeag: "Select",
+    curLeag: "Synthesis",
     account: "",
     curPage: 1,
     itemsPerPage: 50,
@@ -51,8 +51,83 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.getLeagues();
+    // this.getLeagues();
+    this.getDataFromDb();
   }
+
+  componentWillUnmount() {}
+
+  // just a note, here, in the front end, we use the id key of our data object
+  // in order to identify which we want to Update or delete.
+  // for our back end, we use the object id assigned by MongoDB to modify
+  // data base ladders
+
+  // our first get method that uses our backend api to
+  // fetch data from our data base
+  getDataFromDb = () => {
+    axios
+      .post("http://localhost:3001/api/getData", {
+        collectionName: "Synthesis"
+      })
+      .then(data => data.json())
+      .then(result => {
+        console.log(result);
+        this.setState({ ladders: result });
+      });
+  };
+
+  // our put method that uses our backend api
+  // to create new query into our data base
+  putDataToDB = message => {
+    let currentIds = this.state.data.map(data => data.id);
+    let idToBeAdded = 0;
+    while (currentIds.includes(idToBeAdded)) {
+      ++idToBeAdded;
+    }
+
+    axios.post("http://localhost:3001/api/putData", {
+      id: idToBeAdded,
+      message: message
+    });
+  };
+
+  // our delete method that uses our backend api
+  // to remove existing database information
+  deleteFromDB = idTodelete => {
+    let objIdToDelete = null;
+    this.state.data.forEach(dat => {
+      if (dat.id === idTodelete) {
+        objIdToDelete = dat._id;
+      }
+    });
+
+    axios.delete("http://localhost:3001/api/deleteData", {
+      data: {
+        id: objIdToDelete
+      }
+    });
+  };
+
+  // our update method that uses our backend api
+  // to overwrite existing data base information
+  updateDB = (idToUpdate, updateToApply) => {
+    let objIdToUpdate = null;
+    this.state.data.forEach(dat => {
+      if (dat.id === idToUpdate) {
+        objIdToUpdate = dat._id;
+      }
+    });
+
+    axios.post("http://localhost:3001/api/updateData", {
+      id: objIdToUpdate,
+      update: { message: updateToApply }
+    });
+  };
+
+  // log some stuff
+  logStuff = () => {
+    console.log(this.state.data);
+  };
 
   // set API request to get JSON data containing list of league information
   getLeagues() {
@@ -79,43 +154,6 @@ class App extends Component {
       console.error(e);
     }
   }
-
-  sendLadderAPIRequest = (limit, offset, league, account) => {
-    if (offset >= this.state.max) {
-      console.log("Max entries reached.");
-      return;
-    }
-    const url =
-      "http://api.pathofexile.com/ladders/" +
-      league +
-      "?offset=" +
-      offset +
-      "&limit=" +
-      limit +
-      (account ? "&accountName=" + account : "");
-    console.log("Sending API call:", url);
-    return axios.get(url);
-  };
-
-  // sends ladder API request and adds response to state.entries
-  sendAndHandleLaddAPIRequest = (limit, offset, league, account, entries) => {
-    try {
-      this.sendLadderAPIRequest(limit, offset, league, account).then(
-        response => {
-          for (const entry of response.data.entries) {
-            entries.push({
-              id: entry.character.id,
-              character: entry.character,
-              account: entry.account
-            });
-          }
-          this.setState({ entries });
-        }
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   handlePageClick = index => {
     this.setState({ curPage: index });
@@ -162,7 +200,7 @@ class App extends Component {
       e.preventDefault();
       this.sendAndHandleLaddAPIRequest(
         this.state.limit,
-        this.state.entries.length - 1,
+        this.state.ladders.length - 1,
         this.state.curLeag,
         e.target.value,
         []
@@ -173,10 +211,10 @@ class App extends Component {
   handleLoadMoreClick = () => {
     this.sendAndHandleLaddAPIRequest(
       this.state.limit,
-      this.state.entries.length - 1,
+      this.state.ladders.length - 1,
       this.state.curLeag,
       this.state.account,
-      this.state.entries
+      this.state.ladders
     );
   };
 
@@ -199,7 +237,7 @@ class App extends Component {
             />
             <Ladder
               ascendancy={this.state.curAscd}
-              entries={this.state.entries}
+              entries={this.state.ladders}
               curPage={this.state.curPage}
               itemsPerPage={this.state.itemsPerPage}
               league={this.state.curLeag}

@@ -35,10 +35,10 @@ class Navigator extends Component {
               <NavDropdown title={curLeag}>
                 {leagues.map(league => (
                   <NavDropdown.Item
-                    eventKey={league.description}
-                    onClick={() => onLeagueClick(league.id)}
+                    eventKey={league}
+                    onClick={() => onLeagueClick(league)}
                   >
-                    {league.id}
+                    {league}
                   </NavDropdown.Item>
                 ))}
               </NavDropdown>
