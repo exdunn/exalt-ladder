@@ -46,7 +46,7 @@ class App extends Component {
     ],
     targetClass: "All",
     targetLeague: "",
-    targetAccount: "",
+    targetName: "",
     curPage: 1,
     itemsPerPage: 25,
     limit: 200,
@@ -152,7 +152,7 @@ class App extends Component {
       return;
     }
     this.setState({ targetLeague: league });
-    this.setState({ account: "" });
+    this.setState({ targetName: "" });
   };
 
   handleAscdClick = ascd => {
@@ -166,11 +166,13 @@ class App extends Component {
     }
   };
 
-  handleAccountChange = e => {
-    this.setState({ account: e.target.value });
+  // handles account search field changes
+  onNameSearchChange = e => {
+    this.setState({ targetName: e.target.value });
   };
 
-  handleAccountEnterPress = e => {
+  // handles account search field enter press
+  handleNameSearchEnterPress = e => {
     if (e.key === "Enter" && e.target.value) {
       e.preventDefault();
     }
@@ -186,11 +188,11 @@ class App extends Component {
               ascendancies={this.state.ascendancies}
               targetClass={this.state.targetClass}
               targetLeague={this.state.targetLeague}
-              account={this.state.account}
+              name={this.state.targetName}
               onLeagueClick={this.handleLeagueClick}
               onAscdClick={this.handleAscdClick}
-              onAccountChange={this.handleAccountChange}
-              onNameEnterPress={this.handleAccountEnterPress}
+              onNameSearchChange={this.onNameSearchChange}
+              onNameSearchEnterPress={this.handleNameSearchEnterPress}
             />
             <Ladder
               ascendancy={this.state.targetClass}
@@ -198,6 +200,7 @@ class App extends Component {
               curPage={this.state.curPage}
               itemsPerPage={this.state.itemsPerPage}
               league={this.state.targetLeague}
+              name={this.state.targetName}
               onPageClick={this.handlePageClick}
               onPrevClick={this.handlePrevClick}
               onNextClick={this.handleNextClick}

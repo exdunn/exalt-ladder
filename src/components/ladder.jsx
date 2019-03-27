@@ -13,14 +13,22 @@ class Ladder extends Component {
       curPage,
       ascendancy,
       league,
+      name,
       onPageClick,
       onPrevClick,
       onNextClick
     } = this.props;
 
-    const filteredEntries = entries.filter(
-      entry => ascendancy === "All" || entry.character.class === ascendancy
-    );
+    const filteredEntries = entries
+      .filter(
+        entry => ascendancy === "All" || entry.character.class === ascendancy
+      )
+      .filter(entry =>
+        name != ""
+          ? entry.account.name.toUpperCase().includes(name.toUpperCase()) ||
+            entry.character.name.toUpperCase().includes(name.toUpperCase())
+          : true
+      );
 
     const pageNumbers = [];
     const pageCount = filteredEntries.length / itemsPerPage;

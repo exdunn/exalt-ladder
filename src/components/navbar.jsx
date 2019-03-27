@@ -15,11 +15,11 @@ class Navigator extends Component {
       ascendancies,
       targetClass,
       targetLeague,
-      targetAccount,
+      name,
       onLeagueClick,
       onAscdClick,
-      onAccountChange,
-      onNameEnterPress
+      onNameSearchChange,
+      onNameSearchEnterPress
     } = this.props;
     return (
       <Navbar expand="md" bg="dark" variant="dark">
@@ -59,11 +59,11 @@ class Navigator extends Component {
               <Form inline>
                 <FormControl
                   type="text"
-                  placeholder="Account"
+                  placeholder="Name"
                   className="mr-sm-2"
-                  value={targetAccount}
-                  onChange={e => onAccountChange(e)}
-                  onKeyPress={e => onNameEnterPress(e)}
+                  value={name}
+                  onChange={e => onNameSearchChange(e)}
+                  onKeyPress={e => onNameSearchEnterPress(e)}
                 />
               </Form>
             </Col>
