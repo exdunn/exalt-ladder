@@ -19,7 +19,7 @@ const COLLECTION_NAMES = [
 ];
 
 // (optional) only made for logging and
-// bodyParser, parses the request body to be a readable json format
+// bodyParser, parses the req body to be a readable json format
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
@@ -30,9 +30,9 @@ var collections = {};
 
 // this is our create methid
 // this method adds new data in our database
-router.post("/putData", (request, response) => {});
+router.post("/putData", (req, res) => {});
 
-// append /api for our http requests
+// append /api for our http reqs
 app.use("/api", router);
 
 // launch our backend into a port
@@ -56,17 +56,16 @@ app.listen(API_PORT, () => {
 
 // this is our get method
 // this method fetches all available data in our database
-router.post("/getData", (request, response) => {
-  const { collectionName } = request.body;
-  console.log(collectionName);
-  collections[collectionName].find({}).toArray((error, result) => {
+router.get("/getData", (req, res) => {
+  const cn = req.query.colName;
+  collections[cn].find({}).toArray((error, data) => {
     if (error) {
-      return response.status(500).send(error);
+      return res.status(500).send(error);
     }
-    response.send(result);
+    return res.json({ data: data });
   });
 });
 
 // this is our update method
 // this method overwrites existing data in our database
-router.post("/updateData", (request, response) => {});
+router.post("/updateData", (req, res) => {});

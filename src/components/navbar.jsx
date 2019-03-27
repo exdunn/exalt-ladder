@@ -14,7 +14,7 @@ import {
 class Navigator extends Component {
   render() {
     const {
-      leagues,
+      leagueNames,
       ascendancies,
       curAscd,
       curLeag,
@@ -22,8 +22,7 @@ class Navigator extends Component {
       onLeagueClick,
       onAscdClick,
       onAccountChange,
-      onNameEnterPress,
-      onLoadMoreClick
+      onNameEnterPress
     } = this.props;
     return (
       <Navbar expand="md" bg="dark" variant="dark">
@@ -33,12 +32,12 @@ class Navigator extends Component {
           <Nav className="mr-auto">
             <Col>
               <NavDropdown title={curLeag}>
-                {leagues.map(league => (
+                {leagueNames.map(leagueName => (
                   <NavDropdown.Item
-                    eventKey={league}
-                    onClick={() => onLeagueClick(league)}
+                    eventKey={leagueName}
+                    onClick={() => onLeagueClick(leagueName)}
                   >
-                    {league}
+                    {leagueName}
                   </NavDropdown.Item>
                 ))}
               </NavDropdown>
@@ -68,23 +67,6 @@ class Navigator extends Component {
                   onKeyPress={e => onNameEnterPress(e)}
                 />
               </Form>
-            </Col>
-
-            <Col>
-              <OverlayTrigger
-                placement={"right"}
-                overlay={<Tooltip>Click to load more characters!</Tooltip>}
-              >
-                <Button
-                  variant="primary"
-                  style={{
-                    display: curLeag === "Select" ? "none" : "inline"
-                  }}
-                  onClick={() => onLoadMoreClick()}
-                >
-                  Load
-                </Button>
-              </OverlayTrigger>
             </Col>
           </Nav>
         </Navbar.Collapse>

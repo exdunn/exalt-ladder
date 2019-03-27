@@ -4,13 +4,17 @@ import "./App.css";
 import Navigator from "./components/navbar";
 import Ladder from "./components/ladder";
 import { Container } from "react-bootstrap";
-import { PassThrough } from "stream";
 
 class App extends Component {
   state = {
-    ladders: [],
+    leagues: {},
     matchingEntries: [],
-    leagues: ["Synthesis", "Hardcore Synthesis"],
+    leagueNames: [
+      "Synthesis",
+      "Hardcore Synthesis",
+      "SSF Synthesis",
+      "SSF Synthesis HC"
+    ],
     ascendancies: [
       "All",
       "Maurader",
@@ -41,7 +45,7 @@ class App extends Component {
       "Ascendant"
     ],
     curAscd: "All",
-    curLeag: "Synthesis",
+    curLeag: "select",
     account: "",
     curPage: 1,
     itemsPerPage: 50,
@@ -50,34 +54,37 @@ class App extends Component {
     name: ""
   };
 
+  constructor(props) {
+    super(props);
+    this.state.leagues[this.state.curLeag] = [];
+  }
+
   componentDidMount() {
-    // this.getLeagues();
     this.getDataFromDb();
   }
 
   componentWillUnmount() {}
 
-  // just a note, here, in the front end, we use the id key of our data object
-  // in order to identify which we want to Update or delete.
-  // for our back end, we use the object id assigned by MongoDB to modify
-  // data base ladders
-
-  // our first get method that uses our backend api to
-  // fetch data from our data base
+  // fetch data from exaltDB
   getDataFromDb = () => {
-    axios
-      .post("http://localhost:3001/api/getData", {
-        collectionName: "Synthesis"
-      })
-      .then(data => data.json())
-      .then(result => {
-        console.log(result);
-        this.setState({ ladders: result });
-      });
+    for (const name of this.state.leagueNames) {
+      axios
+        .get("http://localhost:3001/api/getData", {
+          params: {
+            colName: name
+          }
+        })
+        .then(res => {
+          const data = res.data.data;
+          const leagues = this.state.leagues;
+          leagues[name] = data;
+          this.setState({ leagues: leagues });
+        });
+    }
   };
 
   // our put method that uses our backend api
-  // to create new query into our data base
+  // TODO
   putDataToDB = message => {
     let currentIds = this.state.data.map(data => data.id);
     let idToBeAdded = 0;
@@ -92,7 +99,7 @@ class App extends Component {
   };
 
   // our delete method that uses our backend api
-  // to remove existing database information
+  // TODO
   deleteFromDB = idTodelete => {
     let objIdToDelete = null;
     this.state.data.forEach(dat => {
@@ -109,7 +116,7 @@ class App extends Component {
   };
 
   // our update method that uses our backend api
-  // to overwrite existing data base information
+  // TODO
   updateDB = (idToUpdate, updateToApply) => {
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
@@ -123,37 +130,6 @@ class App extends Component {
       update: { message: updateToApply }
     });
   };
-
-  // log some stuff
-  logStuff = () => {
-    console.log(this.state.data);
-  };
-
-  // set API request to get JSON data containing list of league information
-  getLeagues() {
-    const url = "http://api.pathofexile.com/leagues";
-    try {
-      console.log("Sending API call:", url);
-      const leagues = [];
-      axios
-        .get(url)
-        .then(response => {
-          const today = new Date();
-          for (const entry of response.data) {
-            const date = new Date(entry.endAt);
-            if (isNaN(Date.parse(entry.endAt)) || date > today) {
-              leagues.push(entry);
-            }
-          }
-          this.setState({ leagues });
-        })
-        .catch(e => {
-          console.error("Error caught sending API call", url, e);
-        });
-    } catch (e) {
-      console.error(e);
-    }
-  }
 
   handlePageClick = index => {
     this.setState({ curPage: index });
@@ -177,7 +153,6 @@ class App extends Component {
     }
     this.setState({ curLeag: league });
     this.setState({ account: "" });
-    this.sendAndHandleLaddAPIRequest(this.state.limit, 0, league, "", []);
   };
 
   handleAscdClick = ascd => {
@@ -208,23 +183,13 @@ class App extends Component {
     }
   };
 
-  handleLoadMoreClick = () => {
-    this.sendAndHandleLaddAPIRequest(
-      this.state.limit,
-      this.state.ladders.length - 1,
-      this.state.curLeag,
-      this.state.account,
-      this.state.ladders
-    );
-  };
-
   render() {
     return (
       <React.Fragment>
         <main>
           <Container>
             <Navigator
-              leagues={this.state.leagues}
+              leagueNames={this.state.leagueNames}
               ascendancies={this.state.ascendancies}
               curAscd={this.state.curAscd}
               curLeag={this.state.curLeag}
@@ -233,11 +198,10 @@ class App extends Component {
               onAscdClick={this.handleAscdClick}
               onAccountChange={this.handleAccountChange}
               onNameEnterPress={this.handleAccountEnterPress}
-              onLoadMoreClick={this.handleLoadMoreClick}
             />
             <Ladder
               ascendancy={this.state.curAscd}
-              entries={this.state.ladders}
+              entries={this.state.leagues[this.state.curLeag]}
               curPage={this.state.curPage}
               itemsPerPage={this.state.itemsPerPage}
               league={this.state.curLeag}
