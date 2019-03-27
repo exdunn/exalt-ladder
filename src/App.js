@@ -44,11 +44,11 @@ class App extends Component {
       "Guardian",
       "Ascendant"
     ],
-    curAscd: "All",
-    curLeag: "select",
-    account: "",
+    targetClass: "All",
+    targetLeague: "",
+    targetAccount: "",
     curPage: 1,
-    itemsPerPage: 50,
+    itemsPerPage: 25,
     limit: 200,
     max: 2000,
     name: ""
@@ -56,7 +56,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state.leagues[this.state.curLeag] = [];
+    this.state.leagues[this.state.targetLeague] = [];
   }
 
   componentDidMount() {
@@ -148,16 +148,16 @@ class App extends Component {
   };
 
   handleLeagueClick = league => {
-    if (this.state.curLeag === league) {
+    if (this.state.targetLeague === league) {
       return;
     }
-    this.setState({ curLeag: league });
+    this.setState({ targetLeague: league });
     this.setState({ account: "" });
   };
 
   handleAscdClick = ascd => {
-    const curAscd = ascd;
-    this.setState({ curAscd });
+    const targetClass = ascd;
+    this.setState({ targetClass });
   };
 
   handleAscendancyEnterPress = e => {
@@ -173,13 +173,6 @@ class App extends Component {
   handleAccountEnterPress = e => {
     if (e.key === "Enter" && e.target.value) {
       e.preventDefault();
-      this.sendAndHandleLaddAPIRequest(
-        this.state.limit,
-        this.state.ladders.length - 1,
-        this.state.curLeag,
-        e.target.value,
-        []
-      );
     }
   };
 
@@ -191,8 +184,8 @@ class App extends Component {
             <Navigator
               leagueNames={this.state.leagueNames}
               ascendancies={this.state.ascendancies}
-              curAscd={this.state.curAscd}
-              curLeag={this.state.curLeag}
+              targetClass={this.state.targetClass}
+              targetLeague={this.state.targetLeague}
               account={this.state.account}
               onLeagueClick={this.handleLeagueClick}
               onAscdClick={this.handleAscdClick}
@@ -200,11 +193,11 @@ class App extends Component {
               onNameEnterPress={this.handleAccountEnterPress}
             />
             <Ladder
-              ascendancy={this.state.curAscd}
-              entries={this.state.leagues[this.state.curLeag]}
+              ascendancy={this.state.targetClass}
+              entries={this.state.leagues[this.state.targetLeague]}
               curPage={this.state.curPage}
               itemsPerPage={this.state.itemsPerPage}
-              league={this.state.curLeag}
+              league={this.state.targetLeague}
               onPageClick={this.handlePageClick}
               onPrevClick={this.handlePrevClick}
               onNextClick={this.handleNextClick}

@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import {
-  Button,
   Col,
   Form,
   FormControl,
   Navbar,
   NavDropdown,
-  Nav,
-  Tooltip,
-  OverlayTrigger
+  Nav
 } from "react-bootstrap";
 
 class Navigator extends Component {
@@ -16,9 +13,9 @@ class Navigator extends Component {
     const {
       leagueNames,
       ascendancies,
-      curAscd,
-      curLeag,
-      account,
+      targetClass,
+      targetLeague,
+      targetAccount,
       onLeagueClick,
       onAscdClick,
       onAccountChange,
@@ -31,7 +28,9 @@ class Navigator extends Component {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Col>
-              <NavDropdown title={curLeag}>
+              <NavDropdown
+                title={targetLeague === "" ? "Select" : targetLeague}
+              >
                 {leagueNames.map(leagueName => (
                   <NavDropdown.Item
                     eventKey={leagueName}
@@ -44,7 +43,7 @@ class Navigator extends Component {
             </Col>
 
             <Col>
-              <NavDropdown title={curAscd}>
+              <NavDropdown title={targetClass}>
                 {ascendancies.map(ascd => (
                   <NavDropdown.Item
                     eventKey={ascd.description}
@@ -62,7 +61,7 @@ class Navigator extends Component {
                   type="text"
                   placeholder="Account"
                   className="mr-sm-2"
-                  value={account}
+                  value={targetAccount}
                   onChange={e => onAccountChange(e)}
                   onKeyPress={e => onNameEnterPress(e)}
                 />
