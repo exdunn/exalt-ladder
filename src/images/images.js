@@ -1,0 +1,30 @@
+const Images = {
+  templar: require("./templar.png"),
+  inquisitor: require("./inquisitor.png"),
+  guardian: require("./guardian.png"),
+  hierophant: require("./hierophant.png"),
+  witch: require("./witch.png"),
+  elementalist: require("./elementalist.png"),
+  occultist: require("./occultist.png"),
+  necromancer: require("./necromancer.png"),
+  shadow: require("./shadow.png"),
+  assassin: require("./assassin.png"),
+  trickster: require("./trickster.png"),
+  saboteur: require("./saboteur.png"),
+  ranger: require("./ranger.png"),
+  pathfinder: require("./pathfinder.png"),
+  raider: require("./raider.png"),
+  deadeye: require("./deadeye.png"),
+  duelist: require("./duelist.png"),
+  slayer: require("./slayer.png"),
+  gladiator: require("./gladiator.png"),
+  champion: require("./champion.png"),
+  marauder: require("./marauder.png"),
+  chieftain: require("./chieftain.png"),
+  berserker: require("./berserker.png"),
+  juggernaut: require("./juggernaut.png"),
+  scion: require("./scion.png"),
+  ascendant: require("./ascendant.png")
+};
+
+export default Images;
