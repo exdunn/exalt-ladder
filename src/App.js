@@ -155,7 +155,7 @@ class App extends Component {
     this.setState({ targetName: "" });
   };
 
-  handleAscdClick = ascd => {
+  handleAscendancyClick = ascd => {
     const targetClass = ascd;
     this.setState({ targetClass });
   };
@@ -190,7 +190,7 @@ class App extends Component {
               targetLeague={this.state.targetLeague}
               name={this.state.targetName}
               onLeagueClick={this.handleLeagueClick}
-              onAscdClick={this.handleAscdClick}
+              onAscendancyClick={this.handleAscendancyClick}
               onNameSearchChange={this.onNameSearchChange}
               onNameSearchEnterPress={this.handleNameSearchEnterPress}
             />
@@ -204,6 +204,7 @@ class App extends Component {
               onPageClick={this.handlePageClick}
               onPrevClick={this.handlePrevClick}
               onNextClick={this.handleNextClick}
+              onAscendancyClick={this.handleAscendancyClick}
             />
           </Container>
         </main>

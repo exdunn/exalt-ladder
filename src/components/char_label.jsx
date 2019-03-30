@@ -4,10 +4,13 @@ import "../css/char_label.css";
 
 class CharLabel extends Component {
   render() {
-    const { entry } = this.props;
+    const { entry, onAscendancyClick } = this.props;
+    const className =
+      "card m-2" + (entry.character.level >= 100 ? " text-primary" : "");
+    console.log(className);
 
     return (
-      <div className="card m-2">
+      <div className={className}>
         <div className="row no-gutters p-2">
           <div className="col">{entry.rank}</div>
           <div className="col-6">
@@ -18,6 +21,7 @@ class CharLabel extends Component {
             <Sticker
               text={entry.character.class}
               image={entry.character.class.toLowerCase()}
+              onStickerClick={onAscendancyClick}
               variant="dark"
             />
           </div>

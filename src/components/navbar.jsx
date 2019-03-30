@@ -17,7 +17,7 @@ class Navigator extends Component {
       targetLeague,
       name,
       onLeagueClick,
-      onAscdClick,
+      onAscendancyClick,
       onNameSearchChange,
       onNameSearchEnterPress
     } = this.props;
@@ -47,7 +47,7 @@ class Navigator extends Component {
                 {ascendancies.map(ascd => (
                   <NavDropdown.Item
                     eventKey={ascd.description}
-                    onClick={() => onAscdClick(ascd)}
+                    onClick={() => onAscendancyClick(ascd)}
                   >
                     {ascd}
                   </NavDropdown.Item>

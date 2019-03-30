@@ -16,7 +16,8 @@ class Ladder extends Component {
       name,
       onPageClick,
       onPrevClick,
-      onNextClick
+      onNextClick,
+      onAscendancyClick
     } = this.props;
 
     const filteredEntries = entries
@@ -65,7 +66,11 @@ class Ladder extends Component {
         {filteredEntries
           .slice((curPage - 1) * itemsPerPage, curPage * itemsPerPage)
           .map(entry => (
-            <CharLabel key={entry.id} entry={entry} />
+            <CharLabel
+              key={entry.id}
+              entry={entry}
+              onAscendancyClick={onAscendancyClick}
+            />
           ))}
         <PageBar
           hideArrows={filteredEntries.length === 0}
