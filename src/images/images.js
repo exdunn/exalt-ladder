@@ -1,4 +1,6 @@
 const Images = {
+  skull: require("./skull.png"),
+  plug: require("./plug.png"),
   templar: require("./templar.png"),
   inquisitor: require("./inquisitor.png"),
   guardian: require("./guardian.png"),

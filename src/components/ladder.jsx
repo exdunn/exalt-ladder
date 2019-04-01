@@ -25,7 +25,7 @@ class Ladder extends Component {
         entry => ascendancy === "All" || entry.character.class === ascendancy
       )
       .filter(entry =>
-        name != ""
+        name !== ""
           ? entry.account.name.toUpperCase().includes(name.toUpperCase()) ||
             entry.character.name.toUpperCase().includes(name.toUpperCase())
           : true

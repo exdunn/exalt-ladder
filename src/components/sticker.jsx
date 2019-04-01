@@ -1,17 +1,15 @@
 import React, { Component } from "react";
-import { Badge, Image, Col } from "react-bootstrap";
-import Images from "../images/images";
+import { OverlayTrigger, Image, Col, Tooltip } from "react-bootstrap";
 import "../css/style.css";
 
 class Sticker extends Component {
   render() {
-    const { image, text, onStickerClick } = this.props;
+    const { image, tooltip, onStickerClick } = this.props;
     return (
-      <div className="cursor-pointer" onClick={() => onStickerClick(text)}>
-        <Col>
-          <Image src={Images[image]} roundedCircle />
-        </Col>
-        <Col>{text}</Col>
+      <div onClick={() => onStickerClick(tooltip)} className="cursor-pointer">
+        <OverlayTrigger placement="left" overlay={<Tooltip>{tooltip}</Tooltip>}>
+          <Image src={image} roundedCircle />
+        </OverlayTrigger>
       </div>
     );
   }
