@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Sticker from "./sticker";
 import "../css/char_label.css";
 import Images from "../images/images.js";
@@ -16,9 +16,28 @@ class CharLabel extends Component {
           <div className="col">{entry.rank}</div>
 
           <div className="col">
-            {entry.dead && <Sticker tooltip={"Dead"} image={Images.skull} />}
-            {entry.online && <Sticker tooltip={"Online"} image={Images.plug} />}
-            {entry.character.name}
+            {entry.dead && (
+              <Sticker
+                tooltip={"Dead"}
+                image={Images.skull}
+                onStickerClick={() => {}}
+              />
+            )}
+            {entry.online && (
+              <Sticker
+                tooltip={"Online"}
+                image={Images.plug}
+                onStickerClick={() => {}}
+              />
+            )}
+            <a
+              target="_blank"
+              href={`https://www.pathofexile.com/account/view-profile/${
+                entry.account.name
+              }`}
+            >
+              {entry.character.name}
+            </a>
           </div>
           <div className="col">{entry.character.level}</div>
           <div className="col">
