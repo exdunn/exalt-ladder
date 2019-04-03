@@ -1,8 +1,6 @@
 # EXALT LADDER
 Web application for viewing ladders in Path of Exile.
 
-Created as a framework for more features
-
 Currently includes rank, character name, class, online status, dead status
 
 Filter by class, character/account name, and league
