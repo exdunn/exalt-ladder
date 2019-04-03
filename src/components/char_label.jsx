@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Sticker from "./sticker";
-import "../css/char_label.css";
+import "../css/style.css";
 import Images from "../images/images.js";
 
 class CharLabel extends Component {
@@ -13,9 +12,7 @@ class CharLabel extends Component {
     return (
       <div className={className}>
         <div className="row no-gutters p-2">
-          <div className="col">{entry.rank}</div>
-
-          <div className="col">
+          <div className="col-8">
             {entry.dead && (
               <Sticker
                 tooltip={"Dead"}
@@ -30,14 +27,18 @@ class CharLabel extends Component {
                 onStickerClick={() => {}}
               />
             )}
-            <a
-              target="_blank"
-              href={`https://www.pathofexile.com/account/view-profile/${
-                entry.account.name
-              }`}
-            >
-              {entry.character.name}
-            </a>
+            <div>
+              {entry.rank}
+              <a
+                class="account-link"
+                target="_blank"
+                href={`https://www.pathofexile.com/account/view-profile/${
+                  entry.account.name
+                }`}
+              >
+                {entry.character.name}
+              </a>
+            </div>
           </div>
           <div className="col">{entry.character.level}</div>
           <div className="col">

@@ -157,7 +157,8 @@ class App extends Component {
 
   handleAscendancyClick = ascd => {
     const targetClass = ascd;
-    this.setState({ targetClass });
+    const curPage = 1;
+    this.setState({ targetClass, curPage });
   };
 
   handleAscendancyEnterPress = e => {

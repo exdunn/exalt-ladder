@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { OverlayTrigger, Image, Col, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Image, Tooltip } from "react-bootstrap";
 import "../css/style.css";
 
 class Sticker extends Component {
