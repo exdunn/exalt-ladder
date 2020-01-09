@@ -8,6 +8,6 @@
 * Includes links to player profiles on the official website
 
 ## Implementation
-* Single page frontend built with React, Bootstrap, and CSS
+* Single page front end UI built with React, Bootstrap, and CSS
 * Backend Node server which sends RESTful API requests to the Path of Exile player API
 * Parses JSON API responses into JavaScript objects
