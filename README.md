@@ -1,12 +1,13 @@
-# EXALT LADDER
-Web application for viewing ladders in Path of Exile.
+# Exalt Ladder
+![demo](./exalt-ladder.gif)
 
-Currently includes rank, character name, class, online status, dead status
+## Features
+* Displays character information for the top 500 Path of Exile Players from each league (hardcore, softcore, SSF, etc.)
+* Ranks players by experience/level
+* Filtering by character name, class, and alive/dead status
+* Includes links to player profiles on the official website
 
-Filter by class, character/account name, and league
-
-Click on the character name to access their profile page on the official Path of Exile Website.
-
-I created this application as a useful framework for requesting and processing information from the PoE API and plan to incorporate more functionality in the future.
-
-[Video Demo](https://www.youtube.com/watch?v=-3vmreg0SBE&feature=youtu.be)
+## Implementation
+* Single page frontend built with React, Bootstrap, and CSS
+* Backend Node server which sends RESTful API requests to the Path of Exile player API
+* Parses JSON API responses into JavaScript objects
